@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extras</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Navbar */
+    .navbar {
+        background-color: #333;
+        display: flex;
+        justify-content: center;
+    }
+
+    .navbar a {
+        color: white;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+    .navbar a:hover {
+        background-color: #e07676;
+    }
+
+    /* Header */
+    .header {
+        background: #f4f4f4;
+        text-align: center;
+        padding: 40px;
+    }
+
+    /* Carousel */
+    .carousel {
+        position: relative;
+        max-width: 600px;
+        margin: 40px auto;
+        overflow: hidden;
+    }
+
+    .slides {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .review-card {
+        min-width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+        text-align: center;
+        background: #fafafa;
+    }
+
+    /* Stars */
+    .stars {
+        color: gold;
+        font-size: 20px;
+        margin: 5px 0;
+    }
+
+    /* Buttons */
+    .prev, .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: black;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .prev { left: 0; }
+    .next { right: 0; }
+
+    /* Footer */
+    .footer {
+        background: black;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .social-icons img {
+        width: 30px;
+        margin: 10px;
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">FunTime</a>
+    <a href="#">Halo</a>
+    <a href="#">Waffles</a>
+</div>
+
+<!-- Header -->
+<div class="header">
+    <h1>Welcome to Extras</h1>
+    <p>Customer Reviews</p>
+</div>
+
+<!-- Carousel -->
+<div class="carousel">
+    <div class="slides" id="slides">
+
+        <div class="review-card">
+            <h3>Sarah</h3>
+            <p><strong>Bought:</strong> Chocolate Waffles</p>
+            <div class="stars">★★★★★</div>
+            <p>"Absolutely delicious! The waffles were soft and full of flavor."</p>
+        </div>
+
+        <div class="review-card">
+            <h3>John</h3>
+            <p><strong>Bought:</strong> Halo Burger</p>
+            <div class="stars">★★★★☆</div>
+            <p>"Best burger I've had in a long time. Highly recommend!"</p>
+        </div>
+
+        <div class="review-card">
+            <h3>Aisha</h3>
+            <p><strong>Bought:</strong> Strawberry Waffles</p>
+            <div class="stars">★★★★★</div>
+            <p>"Fresh and tasty. The strawberries were perfect!"</p>
+        </div>
+
+        <div class="review-card">
+            <h3>Michael</h3>
+            <p><strong>Bought:</strong> FunTime Combo</p>
+            <div class="stars">★★★★☆</div>
+            <p>"Great value for money. Everything tasted amazing!"</p>
+        </div>
+
+    </div>
+
+    <button class="prev" onclick="moveSlide(-1)">❮</button>
+    <button class="next" onclick="moveSlide(1)">❯</button>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>Follow us</p>
+    <div class="social-icons">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png">
+    </div>
+    <p>&copy; 2026 Extras</p>
+</div>
+
+<!-- JavaScript -->
+<script>
+    let index = 0;
+    const slides = document.getElementById("slides");
+    const totalSlides = slides.children.length;
+
+    function moveSlide(step) {
+        index += step;
+
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+
+        slides.style.transform = "translateX(" + (-index * 100) + "%)";
+    }
+
+    // Auto slide every 4 seconds
+    setInterval(() => {
+        moveSlide(1);
+    }, 4000);
+</script>
+
+</body>
+</html>

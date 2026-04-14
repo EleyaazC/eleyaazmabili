@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waffles</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="styles3.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Waffles</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="waffles.html">Waffles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="signin.html">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="signup.html">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container text-center my-5">
+        <h1 class="display-4 animated-title">Welcome to Waffles!</h1>
+        <p>Explore our delicious waffle menu and discover amazing waffle recipes.</p>
+        <div class="waffle-container">
+            <div class="waffle"></div>
+            <div class="waffle"></div>
+            <div class="waffle"></div>
+        </div>
+    </div>
+
+    <!-- Section About Food and Desserts -->
+    <div class="container text-center my-5">
+        <h2 class="display-4">Our Delicious Menu</h2>
+        <p>Indulge in a variety of sweet and savory waffles, perfect for breakfast, lunch, or dessert. From classic waffles with syrup to extravagant waffle desserts, we have something for everyone!</p>
+        
+        <!-- Row for Images and Descriptions -->
+        <div class="row">
+            <!-- Food Item 1 -->
+            <div class="col-md-4 my-3">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Waffle+Dish" class="card-img-top" alt="Waffle Dish">
+                    <div class="card-body">
+                        <h5 class="card-title">Classic Waffle</h5>
+                        <p class="card-text">A classic waffle served with syrup, whipped cream, and fresh fruits.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Food Item 2 -->
+            <div class="col-md-4 my-3">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Waffle+with+Ice+Cream" class="card-img-top" alt="Waffle with Ice Cream">
+                    <div class="card-body">
+                        <h5 class="card-title">Waffle with Ice Cream</h5>
+                        <p class="card-text">A warm waffle topped with vanilla ice cream and a chocolate drizzle.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Food Item 3 -->
+            <div class="col-md-4 my-3">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Dessert+Waffle" class="card-img-top" alt="Dessert Waffle">
+                    <div class="card-body">
+                        <h5 class="card-title">Dessert Waffle</h5>
+                        <p class="card-text">A rich dessert waffle with chocolate chips, bananas, and a dusting of powdered sugar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

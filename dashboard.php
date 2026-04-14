@@ -1,0 +1,85 @@
+<?php
+require "./includes/session.php";
+require "./includes/connection.php";
+$query = "SELECT username
+    FROM users
+    WHERE user_id = $id";
+
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+    $results = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($results){
+
+        $user = $results['username'];
+
+    }else{
+        echo "query error";
+    }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<body>
+  <?php 
+    session_start();
+    if (!isset($_SESSION['user'])) {
+      header("Location: whoops.html");
+      exit;
+    }
+  ?>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Foodies Hub</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="home.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="waffles.html">Waffles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="sign-in" href="sign-in.php">Sign in</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div class="container mt-5">
+    <section class="video-container">
+      <h2>Watch Our Waffles with Toppings</h2>
+      <iframe 
+          width="1200" 
+          height="800" 
+          src="https://www.youtube.com/embed/v3BakCYQdJc" 
+          title="YouTube video player" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen>
+      </iframe>
+    </section>
+  </div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./js/sign-in.js"></script>
+    
+</body>
+</html>
