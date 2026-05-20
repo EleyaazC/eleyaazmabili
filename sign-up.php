@@ -1,69 +1,102 @@
 <?php
-/*database connection*/
-require_once ' ./db.php';
+// Include necessary files for database and email (PHPMailer)
 
-$response = ['success' => false, 'message' => '', 'field' => ''];
+require_once('./db.php');  // Your database connection file
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    /*Sanitize inputs*/
-    $fullName = filter_var(trim($_POST['fullName']), FILTER_SANITIZE_STRING);
+// require_once('../vendor/autoload.php');  // If using PHPMailer via Composer
+
+$message = "PHP loaded";
+echo "<script type='text/javascript'>alert('$message');</script>";
+
+// Define variables and initialize with empty values
+$name = $email = $password = "";
+$name_err = $email_err = $password_err = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Sanitize inputs
+    $name = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-    $phone = filter_var(trim($_POST['phone']), FILTER_SANITIZE_STRING);
     $password = trim($_POST['password']);
-    $confirmPassword = trim($_POST['confirmPassword']);
 
-    /*Validate inputs*/
-    if (empty($fullName)) {
-        $response['message'] = 'Full Name is required.';
-        $response['field'] = 'full-name';
-    } elseif (empty($email)) {
-        $response['message'] = 'Email is required.';
-        $response['field'] = 'email';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $response['message'] = 'Invalid email format.';
-        $response['field'] = 'email';
-    } elseif (empty($phone)) {
-        $response['message'] = 'Phone number is required.';
-        $response['field'] = 'phone';
-    } elseif (!preg_match("/^[0-9]{10}$/", $phone)) {
-        $response['message'] = 'Invalid phone number format.';
-        $response['field'] = 'phone';
-    } elseif (empty($password)) {
-        $response['message'] = 'Password is required.';
-        $response['field'] = 'password';
-    } elseif (strlen($password) < 8) {
-        $response['message'] = 'Password must be at least 8 characters long.';
-        $response['field'] = 'password';
-    } elseif ($password !== $confirmPassword) {
-        $response['message'] = 'Passwords do not match.';
-        $response['field'] = 'confirm-password';
+    // Validate inputs
+    if (empty($name)) {
+        $name_err = "Name is required.";
+    }
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $email_err = "A valid email is required.";
     } else {
-        $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->execute(['email' => $email]);
-
+        // Check for duplicate email in database
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
         if ($stmt->rowCount() > 0) {
-            $response['message'] = 'Email already exists.';
-            $response['field'] = 'email';
-        } else {
-            /*Insert user into the database*/
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $insertStmt = $db->prepare("INSERT INTO users (full_name, email, phone, password) VALUES (:fullName, :email, :phone, :password)");
-            $insertStmt->bindParam(':fullName', $fullName);
-            $insertStmt->bindParam(':email', $email);
-            $insertStmt->bindParam(':phone', $phone);
-            $insertStmt->bindParam(':password', $hashedPassword);
-            $result = $insertStmt->execute();
-
-            if ($result) {
-                $response['success'] = true;
-                $response['message'] = 'Registration successful!';
-            } else {
-                $response['message'] = 'Registration failed. Please try again.';
-                error_log('Database insertion error: ' . implode(' | ', $insertStmt->errorInfo()));
-            }
+            $email_err = "This email is already registered.";
         }
     }
-}
+    if (empty($password) || strlen($password) < 6) {
+        $password_err = "Password must be at least 6 characters long.";
+    }
 
-echo json_encode($response);
+    // If there are errors, send response back to the AJAX call
+    if (!empty($name_err) || !empty($email_err) || !empty($password_err)) {
+        echo json_encode([
+            'success' => false,
+            'message' => "Please fix the errors below.",
+            'errors' => [
+                'name' => $name_err,
+                'email' => $email_err,
+                'password' => $password_err,
+            ]
+        ]);
+        exit;
+    }
+
+    // Hash the password before inserting into the database
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Insert data into the database
+    $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
+    $stmt->bindParam(':username', $name);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $hashed_password);
+    
+    if ($stmt->execute()) {
+        // Send confirmation email
+        /*
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        $mail->isSMTP();
+        $mail->Host = 'smtp.example.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'your-email@example.com';
+        $mail->Password = 'your-email-password';
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom('no-reply@example.com', 'Your Website');
+        $mail->addAddress($email, $name);
+        $mail->isHTML(true);
+        $mail->Subject = 'Welcome to Our Website';
+        $mail->Body    = "<h1>Welcome, $name!</h1><p>Thank you for signing up with us.</p>";
+        */
+        {
+            // Send success response
+            echo json_encode([
+                'success' => true,
+                'message' => "Sign up successful! A confirmation email has been sent.",
+            ]);
+        } 
+        /* else {
+            echo json_encode([
+                'success' => false,
+                'message' => "Sign up failed, could not send email.",
+            ]);
+        }
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => "Something went wrong. Please try again.",
+        ]); */
+    } 
+}
 ?>
